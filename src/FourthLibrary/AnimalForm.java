@@ -2,8 +2,11 @@ package FourthLibrary;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class AnimalForm {
     public JPanel contentPane;
@@ -13,25 +16,45 @@ public class AnimalForm {
     private JButton dolphinButton;
     private Point point;
     private Falcon falcon;
-    // движущийся объект
+    private ArrayList<Falcon> falcons;
 
-    // создание таймера
-    private Timer timer = new Timer(40, new ActionListener() {
+    javax.swing.Timer timer = new javax.swing.Timer(100, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // расчет текущего положения объекта
-            falcon.move((float) 0.04);
-            // перерисовка элемента
-            animalAction.repaint();
+            animalAction.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    point = new Point(0, 0);
+                    if (falcon.startFly(evt.getX())) {
+                        falcon.move(10f);
+                        falcon.setFinalPosition(evt.getX(), evt.getY());
+                        point.updatePoint((int) falcon.getX(), (int) falcon.getY());
+                        System.out.println(falcon.getX());
+                        System.out.println(falcon.getY());
+                        animalAction.add(point, BorderLayout.CENTER);
+                    }
+                }
+            });
         }
     });
 
     public AnimalForm() {
         // Инициализация Spring
         animalAction.setLayout(new BorderLayout()); // Установите нужный LayoutManager
+        animalAction.setPreferredSize(new Dimension(600, 600));
+        falcons = new ArrayList<>();
 
-        // Инициализация graphPanel
-        point = new Point();
-        Spring.add(point, BorderLayout.CENTER); // Добавляем graphPanel в центр Spring
+
+        falconButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                falcon = new Falcon("Falcon");
+                falcon.setFinalPosition(200, 200);
+                falcons.add(falcon);
+                timer.start();
+            }
+        });
+
+
     }
 }

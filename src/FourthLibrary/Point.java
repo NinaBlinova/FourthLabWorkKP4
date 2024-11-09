@@ -7,6 +7,7 @@ public class Point extends JPanel {
     private double x;
     private double y;
     private final int pointSize = 10; // Размер точки
+    private Falcon falcon;
 
     public Point(double x, double y) {
         this.x = x;
@@ -27,6 +28,4 @@ public class Point extends JPanel {
         g.setColor(Color.RED); // Цвет точки
         g.fillOval((int) x - pointSize / 2, (int) y - pointSize / 2, pointSize, pointSize); // Рисуем точку
     }
-
-
 }

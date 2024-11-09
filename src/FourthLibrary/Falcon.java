@@ -4,20 +4,26 @@ public class Falcon extends FlyingAnimals {
     private double speed;
 
     // начальные координаты
-    private double startX = 0.;
-    private double startY = 0.;
+    private double startX;
+    private double startY;
     // конечные координаты
-    private double finalX = 0.;
-    private double finalY = 0.;
+    private double finalX;
+    private double finalY;
     // текущие координаты
-    private double currentX = 0.;
-    private double currentY = 0.;
+    private double currentX;
+    private double currentY;
     // таймер движения
     private double timeValue = 0.;
 
     public Falcon(String nameAnimal) {
         super(nameAnimal);
         this.speed = 10 + Math.random() * 10; // Генерация скорости от 10 до 20 м/с
+        this.startX = 0; // Начальные координаты по умолчанию
+        this.startY = 0; // Начальные координаты по умолчанию
+        this.finalX = 0; // Конечные координаты по умолчанию
+        this.finalY = 0; // Конечные координаты по умолчанию
+        this.currentX = startX; // Установка текущих координат на начальные
+        this.currentY = -startY; // Инвертируем Y для мировой системы координат
     }
 
     @Override
@@ -61,4 +67,14 @@ public class Falcon extends FlyingAnimals {
         return ((2 * x - 0.5) * (2 * x - 0.5) - 0.25) / 2;
     }
 
+
+    public void setFinalPosition(double finalX, double finalY) {
+        this.finalX = finalX; // Устанавливаем конечную позицию X
+        this.finalY = -finalY; // Инвертируем Y для установки конечной позиции
+    }
+
+
+    public double getFinalPositionX() {
+        return finalX; // Метод для получения конечной позиции
+    }
 }
