@@ -6,10 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.awt.Point;
 
 public class GraphicPanel extends JPanel {
     private Falcon currentFalcon;
     private Data data;
+    private boolean falconInitialized = false;
+
+    private ArrayList<Point> finalPoints = new ArrayList<>();
 
 
     // границы мировой системы координат
@@ -30,7 +35,7 @@ public class GraphicPanel extends JPanel {
                 currentFalcon.move((float) 0.5);
                 repaint(); // Перерисовка элемента
             } else {
-                if (currentFalcon != null && !data.isEmptyData()) {
+                if (!data.isEmptyData()) {
                     currentFalcon = data.getNextAnimal();
                 }
             }
@@ -40,6 +45,14 @@ public class GraphicPanel extends JPanel {
     // Определение конструктора элемента
     public GraphicPanel(Data data) {
         this.data = data;
+
+        if (!data.isEmptyData()) {
+            currentFalcon = data.getNextAnimal();
+            falconInitialized = true;  // Флаг, что сокол инициализирован
+
+        }
+
+
         // Добавление обработчика нажатия кнопки мыши
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -49,12 +62,12 @@ public class GraphicPanel extends JPanel {
                     double y = screenYtoWorldY(evt.getY());
                     // установка координат конечной точки движения объекта
                     currentFalcon.setFinalXY(x, y);
+                    finalPoints.add(new Point((int) x, (int) y));
                 }
-
+                timer.start();
             }
+
         });
-        // запуск таймера
-        timer.start();
     }
 
     // переопределение метода прорисовки элемента
@@ -69,7 +82,7 @@ public class GraphicPanel extends JPanel {
         currentFalcon.drawAt(g, subjX, subjY);
         // прорисовка текстовой строки с координатам объекта
         g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
-        //System.out.println("Current Falcon coordinates: " + subject.getX() + ", " + subject.getY()); // Для отладки
+        //System.out.println("Current Falcon coordinates: " + currentFalcon.getX() + ", " + currentFalcon.getY()); // Для отладки
     }
 
 

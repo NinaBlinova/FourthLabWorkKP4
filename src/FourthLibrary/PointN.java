@@ -5,7 +5,7 @@ import java.awt.*;
 
 // класс для отрисовки точки
 
-public class Point extends JPanel {
+public class PointN extends JPanel {
     private double x;
     private double y;
     private double worldXMin;
@@ -13,7 +13,7 @@ public class Point extends JPanel {
     private double worldYMin;
     private double worldYMax;
 
-    public Point(double worldXMin, double worldXMax, double worldYMin, double worldYMax) {
+    public PointN(double worldXMin, double worldXMax, double worldYMin, double worldYMax) {
         this.x = 0;
         this.y = 0;
         this.worldXMin = worldXMin;
