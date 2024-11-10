@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GraphicPanel extends JPanel {
-    private Falcon subject;
+    private Falcon currentFalcon;
 
     // границы мировой системы координат
     private double worldXMin = -1;
@@ -16,30 +16,31 @@ public class GraphicPanel extends JPanel {
     private double worldYMin = -1;
     private double worldYMax = 1;
 
-    // создание таймера
+    /// создание таймера
     private Timer timer = new Timer(40, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // расчет текущего положения объекта
-            subject.move((float) 0.5);
-            // перерисовка элемента
-            repaint();
+            if (currentFalcon != null) {
+                // расчет текущего положения объекта
+                currentFalcon.move((float) 0.5);
+                repaint(); // Перерисовка элемента
+            }
         }
     });
 
     // Определение конструктора элемента
     public GraphicPanel() {
         // создание экземпляра класса движущегося объекта
-        subject = new Falcon("Falcon", 0, 0);
+        currentFalcon = new Falcon("Falcon", 0, 0);
         // Добавление обработчика нажатия кнопки мыши
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                if (subject.startFly(screenYtoWorldY(evt.getY()))) {
+                if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
                     double x = screenXtoWorldX(evt.getX());
                     double y = screenYtoWorldY(evt.getY());
                     // установка координат конечной точки движения объекта
-                    subject.setFinalXY(x, y);
+                    currentFalcon.setFinalXY(x, y);
                 }
 
             }
@@ -55,12 +56,12 @@ public class GraphicPanel extends JPanel {
         // вызов метода суперкласса
         super.paintComponent(g);
         // вычисление экранных координат объекта
-        int subjX = (int) worldXtoScreenX((int) subject.getX());
-        int subjY = (int) worldYtoScreenY((int) subject.getY());
+        int subjX = (int) worldXtoScreenX((int) currentFalcon.getX());
+        int subjY = (int) worldYtoScreenY((int) currentFalcon.getY());
         // прорисовка объекта
-        subject.drawAt(g, subjX, subjY);
+        currentFalcon.drawAt(g, subjX, subjY);
         // прорисовка текстовой строки с координатам объекта
-        g.drawString("x: " + subject.getX() + " y: " + subject.getY(), 10, 20);
+        g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
         //System.out.println("Current Falcon coordinates: " + subject.getX() + ", " + subject.getY()); // Для отладки
     }
 
@@ -91,5 +92,6 @@ public class GraphicPanel extends JPanel {
     private double screenYtoWorldY(int sy) {
         return (1 - (float) sy / this.getHeight()) * (this.worldYMax - this.worldYMin) + this.worldYMin;
     }
+
 
 }

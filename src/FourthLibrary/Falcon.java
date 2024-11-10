@@ -95,5 +95,11 @@ public class Falcon extends FlyingAnimals {
     public void draw(Graphics g) {
         this.drawAt(g, (int) this.currentX, (int) this.currentY);
     }
+
+    public boolean isAtFinalPosition(double x, double y) {
+        // Проверяем, близки ли текущие координаты к конечным
+        return Math.abs(x - finalX) < 0.1 && Math.abs(y - finalY) < 0.1; // Используем небольшой порог для проверки
+    }
+
 }
 
