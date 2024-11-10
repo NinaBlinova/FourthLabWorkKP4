@@ -16,15 +16,18 @@ public abstract class FlyingAnimals extends Animal {
         this.y = yTarget;
     }
 
-    public boolean getFly(){
+    public boolean getFly() {
         return isFlying;
+    }
+
+    public void setFly(boolean f) {
+        isFlying = f;
     }
 
     public boolean startFly(double yMouse) {
         if (yMouse > 0) {
             this.isFlying = true;
-        }
-        else{
+        } else {
             this.isFlying = false;
         }
         return isFlying;

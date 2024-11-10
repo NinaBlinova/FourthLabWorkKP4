@@ -54,6 +54,7 @@ public class Falcon extends FlyingAnimals {
             this.startX = this.finalX;
             this.startY = this.currentY; // обновляем начальные координаты
             this.timeValue = 0;
+            setFly(false);
             return;
         }
 
@@ -88,7 +89,7 @@ public class Falcon extends FlyingAnimals {
 
     // прорисовка объекта по указанным координатам x, y
     public void drawAt(Graphics g, int x, int y) {
-        g.fillOval(x - 5, y - 5, 10, 10);
+        g.fillOval(x, y, 10, 10);
     }
 
     // прорисовка объекта
@@ -100,6 +101,5 @@ public class Falcon extends FlyingAnimals {
         // Проверяем, близки ли текущие координаты к конечным
         return Math.abs(x - finalX) < 0.1 && Math.abs(y - finalY) < 0.1; // Используем небольшой порог для проверки
     }
-
 }
 

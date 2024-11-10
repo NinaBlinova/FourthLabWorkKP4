@@ -9,29 +9,37 @@ import java.awt.event.MouseEvent;
 
 public class GraphicPanel extends JPanel {
     private Falcon currentFalcon;
+    private Data data;
+
 
     // границы мировой системы координат
     private double worldXMin = -1;
     private double worldXMax = 1;
     private double worldYMin = -1;
+
+
     private double worldYMax = 1;
 
-    /// создание таймера
+
+    // создание таймера
     private Timer timer = new Timer(40, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (currentFalcon != null) {
+            if (currentFalcon != null && !data.isEmptyData()) {
                 // расчет текущего положения объекта
                 currentFalcon.move((float) 0.5);
                 repaint(); // Перерисовка элемента
+            } else {
+                if (currentFalcon != null && !data.isEmptyData()) {
+                    currentFalcon = data.getNextAnimal();
+                }
             }
         }
     });
 
     // Определение конструктора элемента
-    public GraphicPanel() {
-        // создание экземпляра класса движущегося объекта
-        currentFalcon = new Falcon("Falcon", 0, 0);
+    public GraphicPanel(Data data) {
+        this.data = data;
         // Добавление обработчика нажатия кнопки мыши
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -45,7 +53,6 @@ public class GraphicPanel extends JPanel {
 
             }
         });
-
         // запуск таймера
         timer.start();
     }
