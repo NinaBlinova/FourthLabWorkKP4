@@ -9,8 +9,8 @@ public class Falcon extends FlyingAnimals {
     private double startX = 0;
     private double startY = 0;
     // конечные координаты
-    private double finalX = 0;
-    private double finalY = 0;
+    private double finalX;
+    private double finalY;
     // текущие координаты
     private double currentX;
     private double currentY;

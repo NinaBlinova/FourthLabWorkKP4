@@ -34,7 +34,7 @@ public class AnimalForm {
     private void createUIComponents() {
         GraphicPanel graphicPanel = new GraphicPanel();
         graphicPanel.setPreferredSize(new Dimension(600, 600));
-        graphicPanel.setWorldCoords(-100, 100, -100, 100);
+        graphicPanel.setWorldCoords(-10, 10, -300, 300);
         animalAction.add(graphicPanel, BorderLayout.CENTER);
     }
 }

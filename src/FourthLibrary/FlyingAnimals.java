@@ -20,6 +20,9 @@ public abstract class FlyingAnimals extends Animal {
         if (yMouse > 0) {
             this.isFlying = true;
         }
+        else{
+            this.isFlying = false;
+        }
         return isFlying;
     }
 

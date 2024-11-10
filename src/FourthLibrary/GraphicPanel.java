@@ -21,7 +21,7 @@ public class GraphicPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // расчет текущего положения объекта
-            subject.move((float) 0.04);
+            subject.move((float) 0.5);
             // перерисовка элемента
             repaint();
         }
@@ -35,10 +35,13 @@ public class GraphicPanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                double x = screenXtoWorldX(evt.getX());
-                double y = screenYtoWorldY(evt.getY());
-                // установка координат конечной точки движения объекта
-                subject.setFinalXY(x, y);
+                if (subject.startFly(screenYtoWorldY(evt.getY()))) {
+                    double x = screenXtoWorldX(evt.getX());
+                    double y = screenYtoWorldY(evt.getY());
+                    // установка координат конечной точки движения объекта
+                    subject.setFinalXY(x, y);
+                }
+
             }
         });
 
