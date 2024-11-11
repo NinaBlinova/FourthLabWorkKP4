@@ -88,13 +88,9 @@ public class Falcon extends FlyingAnimals {
     }
 
 
-    public void setStartPosition(double x, double y){
-        this.startX = x;
-        this.startY = y;
-    }
-
     // прорисовка объекта по указанным координатам x, y
     public void drawAt(Graphics g, int x, int y) {
+        g.setColor(Color.BLUE);
         g.fillOval(x, y, 10, 10);
     }
 

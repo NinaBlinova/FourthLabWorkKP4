@@ -7,11 +7,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.awt.Point;
 
 public class GraphicPanel extends JPanel {
     private ArrayList<Falcon> falcons = new ArrayList<>();
+    private ArrayList<Hare> hares = new ArrayList<>();
     private int currentFalconIndex = 0; // Индекс текущего сокола
+    private int currentHareIndex = 0; // Индекс текущего зайца
+    String name;
     private Data data;
     private boolean falconInitialized = false;
 
@@ -20,8 +22,6 @@ public class GraphicPanel extends JPanel {
     private double worldXMin = -1;
     private double worldXMax = 1;
     private double worldYMin = -1;
-
-
     private double worldYMax = 1;
 
 
@@ -29,36 +29,58 @@ public class GraphicPanel extends JPanel {
     private Timer timer = new Timer(40, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (currentFalconIndex < falcons.size()) {
-                Falcon currentFalcon = falcons.get(currentFalconIndex);
-                if (currentFalcon != null) {
-                    // расчет текущего положения объекта
-                    currentFalcon.move((float) 0.5);
-                    repaint(); // Перерисовка элемента
+            if (name.equals("Falcon")) {
+                if (currentFalconIndex < falcons.size()) {
+                    Falcon currentFalcon = falcons.get(currentFalconIndex);
+                    if (currentFalcon != null) {
+                        currentFalcon.move((float) 0.5);
+                        repaint();
 
-                    // Проверка, достиг ли сокол конечной позиции
-                    if (currentFalcon.isAtFinalPosition()) {
-                        timer.stop(); // Остановка таймера, если сокол пролетел
-                        currentFalconIndex++; // Переход к следующему соколу
+                        if (currentFalcon.isAtFinalPosition()) {
+                            timer.stop();
+                            currentFalconIndex++;
+                        }
+                    }
+                }
+            } else if (name.equals("Hare")) {
+                if (currentHareIndex < hares.size()) {
+                    Hare currentHare = hares.get(currentHareIndex); // Исправлено на currentHareIndex
+                    if (currentHare != null) {
+                        currentHare.move((float) 0.5);
+                        repaint();
+
+                        if (currentHare.isAtFinalPosition()) {
+                            timer.stop();
+                            currentHareIndex++;
+                        }
                     }
                 }
             }
         }
+
     });
 
     // Определение конструктора элемента
     public GraphicPanel(Data data) {
         this.data = data;
         Falcon falcon = null;
+        Dolphin dolphin = null;
+        Hare hare = null;
+
 
         while (!data.isEmptyData()) {
             Animal animal = data.getNextAnimal();
-            if (animal.nameAnimal == "Falcon") {
+            name = animal.nameAnimal;
+            if (name == "Falcon") {
                 falcon = (Falcon) animal;
+            } else if (name == "Hare") {
+                hare = (Hare) animal;
             }
-
             if (falcon != null) {
                 falcons.add(falcon);
+            }
+            if (hare != null) {
+                hares.add(hare);
             }
         }
 
@@ -66,16 +88,32 @@ public class GraphicPanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                if (currentFalconIndex < falcons.size()) {
-                    Falcon currentFalcon = falcons.get(currentFalconIndex);
-                    if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
-                        double x = screenXtoWorldX(evt.getX());
-                        double y = screenYtoWorldY(evt.getY());
-                        // установка координат конечной точки движения объекта
-                        currentFalcon.setFinalXY(x, y);
-                        timer.start(); // Запуск таймера только при клике
+
+                if (name == "Falcon") {
+                    if (currentFalconIndex < falcons.size()) {
+                        Falcon currentFalcon = falcons.get(currentFalconIndex);
+                        if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
+                            double x = screenXtoWorldX(evt.getX());
+                            double y = screenYtoWorldY(evt.getY());
+                            // установка координат конечной точки движения объекта
+                            currentFalcon.setFinalXY(x, y);
+                            timer.start(); // Запуск таймера только при клике
+                        }
+                    }
+                } else if (name == "Hare") {
+                    if (currentHareIndex < hares.size()) {
+                        Hare currentHare = hares.get(currentHareIndex);
+                        if (currentHare.startWalk(screenYtoWorldY(evt.getY()))) {
+                            double x = screenXtoWorldX(evt.getX());
+                            double y = 0;
+                            // установка координат конечной точки движения объекта
+                            currentHare.setFinalXY(x, y);
+                            timer.start(); // Запуск таймера только при клике
+                        }
                     }
                 }
+
+
             }
         });
     }
@@ -86,16 +124,31 @@ public class GraphicPanel extends JPanel {
         super.paintComponent(g);
         g.drawLine(0, 300, 600, 300);
         g.drawLine(300, 0, 300, 600);
-        for (int i = 0; i < falcons.size(); i++) {
-            Falcon falcon = falcons.get(i);
-            int subjX = (int) worldXtoScreenX(falcon.getX());
-            int subjY = (int) worldYtoScreenY(falcon.getY());
-            falcon.drawAt(g, subjX, subjY); // Отрисовка каждого сокола
-        }
-        // Прорисовка текстовой строки с координатами текущего сокола
-        if (currentFalconIndex < falcons.size()) {
-            Falcon currentFalcon = falcons.get(currentFalconIndex);
-            g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
+
+        if (name == "Falcon") {
+            for (int i = 0; i < falcons.size(); i++) {
+                Falcon falcon = falcons.get(i);
+                int subjX = (int) worldXtoScreenX(falcon.getX());
+                int subjY = (int) worldYtoScreenY(falcon.getY());
+                falcon.drawAt(g, subjX, subjY); // Отрисовка каждого сокола
+            }
+            // Прорисовка текстовой строки с координатами текущего сокола
+            if (currentFalconIndex < falcons.size()) {
+                Falcon currentFalcon = falcons.get(currentFalconIndex);
+                g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
+            }
+        } else if (name == "Hare") {
+            for (int i = 0; i < hares.size(); i++) {
+                Hare hare = hares.get(i);
+                int subjX = (int) worldXtoScreenX(hare.getX());
+                int subjY = (int) worldYtoScreenY(hare.getY());
+                hare.drawAt(g, subjX, subjY); // Отрисовка каждого зайца
+            }
+            // Прорисовка текстовой строки с координатами текущего сокола
+            if (currentFalconIndex < falcons.size()) {
+                Falcon currentFalcon = falcons.get(currentFalconIndex);
+                g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
+            }
         }
     }
 
@@ -119,10 +172,10 @@ public class GraphicPanel extends JPanel {
 
     // процедуры преобразования экранных координат в мировые
     private double screenXtoWorldX(int sx) {
-        return (float) sx / this.getWidth() * (this.worldXMax - this.worldXMin) + this.worldXMin;
+        return (double) sx / this.getWidth() * (this.worldXMax - this.worldXMin) + this.worldXMin;
     }
 
     private double screenYtoWorldY(int sy) {
-        return (1 - (float) sy / this.getHeight()) * (this.worldYMax - this.worldYMin) + this.worldYMin;
+        return (1 - (double) sy / this.getHeight()) * (this.worldYMax - this.worldYMin) + this.worldYMin;
     }
 }

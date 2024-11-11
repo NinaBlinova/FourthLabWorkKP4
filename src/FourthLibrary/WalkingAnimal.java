@@ -6,7 +6,7 @@ public abstract class WalkingAnimal extends Animal {
     private boolean isJumping;
     private double jumpHeight;
 
-    public WalkingAnimal(String nameAnimal, double jumpHeight) {
+    public WalkingAnimal(String nameAnimal) {
         super(nameAnimal);
         this.jumpHeight = jumpHeight;
         this.isJumping = false;
@@ -31,9 +31,15 @@ public abstract class WalkingAnimal extends Animal {
         }
     }
 
+    public void setJump(boolean f){
+        isJumping = f;
+    }
+
 
     @Override
     public boolean isMoving() {
         return isJumping;
     }
+
+    public abstract void move(float time);
 }

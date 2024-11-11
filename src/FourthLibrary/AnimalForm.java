@@ -26,10 +26,21 @@ public class AnimalForm {
         falconButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double x = Math.random() * 10; // Генерация X в диапазоне [0; 20)
-                double y = Math.random() * 600; // Генерация Y в диапазоне [0; 600)
-                addFalcon(x, y); // Добавляем сокола с положительными координатами
+                String name = "Falcon";
+                double x = Math.random() * 10;
+                double y = Math.random() * 500;
+                addAnimal(name, x, y);
                 //System.out.println(data);
+            }
+        });
+
+        hareButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = "Hare";
+                double x = Math.random() * 10;
+                double y = Math.random() * 500;
+                addAnimal(name, x, y);
             }
         });
 
@@ -40,8 +51,6 @@ public class AnimalForm {
                 //System.out.println(data);
             }
         });
-
-
     }
 
     private void createUIComponents() {
@@ -53,9 +62,16 @@ public class AnimalForm {
         animalAction.repaint();
     }
 
-    private void addFalcon(double x, double y) {
-        Falcon newFalcon = new Falcon("Falcon", 0, 0);
-        newFalcon.setFinalXY(x, y); // Устанавливаем конечные координаты
-        data.addAnimal(newFalcon);
+    private void addAnimal(String name, double x, double y) {
+        if (name == "Falcon") {
+            Falcon newFalcon = new Falcon(name, 1, 1);
+            newFalcon.setFinalXY(x, y); // Устанавливаем конечные координаты
+            data.addAnimal(newFalcon);
+        } else if (name == "Hare") {
+            Hare newHare = new Hare(name, 0, 0);
+            newHare.setFinalXY(x, y); // Устанавливаем конечные координаты
+            data.addAnimal(newHare);
+        }
+
     }
 }
