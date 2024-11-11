@@ -34,10 +34,13 @@ public class GraphicPanel extends JPanel {
                 if (currentFalcon != null) {
                     // расчет текущего положения объекта
                     currentFalcon.move((float) 0.5);
+                    repaint(); // Перерисовка элемента
+
+                    // Проверка, достиг ли сокол конечной позиции
                     if (currentFalcon.isAtFinalPosition()) {
+                        timer.stop(); // Остановка таймера, если сокол пролетел
                         currentFalconIndex++; // Переход к следующему соколу
                     }
-                    repaint(); // Перерисовка элемента
                 }
             }
         }
