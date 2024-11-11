@@ -48,7 +48,6 @@ public class GraphicPanel extends JPanel {
                     if (currentHare != null) {
                         currentHare.move((float) 0.5);
                         repaint();
-
                         if (currentHare.isAtFinalPosition()) {
                             timer.stop();
                             currentHareIndex++;
@@ -104,10 +103,7 @@ public class GraphicPanel extends JPanel {
                     if (currentHareIndex < hares.size()) {
                         Hare currentHare = hares.get(currentHareIndex);
                         if (currentHare.startWalk(screenYtoWorldY(evt.getY()))) {
-                            double x = screenXtoWorldX(evt.getX());
-                            double y = 0;
-                            // установка координат конечной точки движения объекта
-                            currentHare.setFinalXY(x, y);
+                            currentHare.setFinalXY();
                             timer.start(); // Запуск таймера только при клике
                         }
                     }
@@ -122,7 +118,7 @@ public class GraphicPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawLine(0, 300, 600, 300);
+        g.drawLine(0, 310, 600, 310);
         g.drawLine(300, 0, 300, 600);
 
         if (name == "Falcon") {
@@ -132,22 +128,12 @@ public class GraphicPanel extends JPanel {
                 int subjY = (int) worldYtoScreenY(falcon.getY());
                 falcon.drawAt(g, subjX, subjY); // Отрисовка каждого сокола
             }
-            // Прорисовка текстовой строки с координатами текущего сокола
-            if (currentFalconIndex < falcons.size()) {
-                Falcon currentFalcon = falcons.get(currentFalconIndex);
-                g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
-            }
         } else if (name == "Hare") {
             for (int i = 0; i < hares.size(); i++) {
                 Hare hare = hares.get(i);
                 int subjX = (int) worldXtoScreenX(hare.getX());
                 int subjY = (int) worldYtoScreenY(hare.getY());
                 hare.drawAt(g, subjX, subjY); // Отрисовка каждого зайца
-            }
-            // Прорисовка текстовой строки с координатами текущего сокола
-            if (currentFalconIndex < falcons.size()) {
-                Falcon currentFalcon = falcons.get(currentFalconIndex);
-                g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
             }
         }
     }

@@ -64,12 +64,10 @@ public class AnimalForm {
 
     private void addAnimal(String name, double x, double y) {
         if (name == "Falcon") {
-            Falcon newFalcon = new Falcon(name, 1, 1);
-            newFalcon.setFinalXY(x, y); // Устанавливаем конечные координаты
+            Falcon newFalcon = new Falcon(name, 0, 0);
             data.addAnimal(newFalcon);
         } else if (name == "Hare") {
             Hare newHare = new Hare(name, 0, 0);
-            newHare.setFinalXY(x, y); // Устанавливаем конечные координаты
             data.addAnimal(newHare);
         }
 
