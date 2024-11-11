@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.awt.Point;
 
 public class GraphicPanel extends JPanel {
-    private Falcon currentFalcon;
+    private ArrayList<Falcon> falcons = new ArrayList<>();
+    private int currentFalconIndex = 0; // Индекс текущего сокола
     private Data data;
     private boolean falconInitialized = false;
-
-    private ArrayList<Point> finalPoints = new ArrayList<>();
 
 
     // границы мировой системы координат
@@ -30,13 +29,15 @@ public class GraphicPanel extends JPanel {
     private Timer timer = new Timer(40, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (currentFalcon != null && !data.isEmptyData()) {
-                // расчет текущего положения объекта
-                currentFalcon.move((float) 0.5);
-                repaint(); // Перерисовка элемента
-            } else {
-                if (!data.isEmptyData()) {
-                    currentFalcon = data.getNextAnimal();
+            if (currentFalconIndex < falcons.size()) {
+                Falcon currentFalcon = falcons.get(currentFalconIndex);
+                if (currentFalcon != null) {
+                    // расчет текущего положения объекта
+                    currentFalcon.move((float) 0.5);
+                    if (currentFalcon.isAtFinalPosition()) {
+                        currentFalconIndex++; // Переход к следующему соколу
+                    }
+                    repaint(); // Перерисовка элемента
                 }
             }
         }
@@ -46,45 +47,47 @@ public class GraphicPanel extends JPanel {
     public GraphicPanel(Data data) {
         this.data = data;
 
-        if (!data.isEmptyData()) {
-            currentFalcon = data.getNextAnimal();
-            falconInitialized = true;  // Флаг, что сокол инициализирован
-
+        while (!data.isEmptyData()) {
+            Falcon falcon = data.getNextAnimal();
+            if (falcon != null) {
+                falcons.add(falcon);
+            }
         }
-
 
         // Добавление обработчика нажатия кнопки мыши
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
-                    double x = screenXtoWorldX(evt.getX());
-                    double y = screenYtoWorldY(evt.getY());
-                    // установка координат конечной точки движения объекта
-                    currentFalcon.setFinalXY(x, y);
-                    finalPoints.add(new Point((int) x, (int) y));
+                if (currentFalconIndex < falcons.size()) {
+                    Falcon currentFalcon = falcons.get(currentFalconIndex);
+                    if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
+                        double x = screenXtoWorldX(evt.getX());
+                        double y = screenYtoWorldY(evt.getY());
+                        // установка координат конечной точки движения объекта
+                        currentFalcon.setFinalXY(x, y);
+                        timer.start(); // Запуск таймера только при клике
+                    }
                 }
-                timer.start();
             }
-
         });
     }
 
     // переопределение метода прорисовки элемента
     @Override
     public void paintComponent(Graphics g) {
-        // вызов метода суперкласса
         super.paintComponent(g);
-        // вычисление экранных координат объекта
-        int subjX = (int) worldXtoScreenX((int) currentFalcon.getX());
-        int subjY = (int) worldYtoScreenY((int) currentFalcon.getY());
-        // прорисовка объекта
-        currentFalcon.drawAt(g, subjX, subjY);
-        // прорисовка текстовой строки с координатам объекта
-        g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
-        //System.out.println("Current Falcon coordinates: " + currentFalcon.getX() + ", " + currentFalcon.getY()); // Для отладки
+        for (int i = 0; i < falcons.size(); i++) {
+            Falcon falcon = falcons.get(i);
+            int subjX = (int) worldXtoScreenX(falcon.getX());
+            int subjY = (int) worldYtoScreenY(falcon.getY());
+            falcon.drawAt(g, subjX, subjY); // Отрисовка каждого сокола
+        }
+        // Прорисовка текстовой строки с координатами текущего сокола
+        if (currentFalconIndex < falcons.size()) {
+            Falcon currentFalcon = falcons.get(currentFalconIndex);
+            g.drawString("x: " + currentFalcon.getX() + " y: " + currentFalcon.getY(), 10, 20);
+        }
     }
-
 
     // установка границ мировой системы координат
     public void setWorldCoords(double xmin, double xmax, double ymin, double ymax) {
@@ -112,6 +115,4 @@ public class GraphicPanel extends JPanel {
     private double screenYtoWorldY(int sy) {
         return (1 - (float) sy / this.getHeight()) * (this.worldYMax - this.worldYMin) + this.worldYMin;
     }
-
-
 }
