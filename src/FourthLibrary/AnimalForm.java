@@ -70,6 +70,5 @@ public class AnimalForm {
             Hare newHare = new Hare(name, 0, 0);
             data.addAnimal(newHare);
         }
-
     }
 }

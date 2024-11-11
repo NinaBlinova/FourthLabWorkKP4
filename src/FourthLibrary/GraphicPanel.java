@@ -15,7 +15,9 @@ public class GraphicPanel extends JPanel {
     private int currentHareIndex = 0; // Индекс текущего зайца
     String name;
     private Data data;
-    private boolean falconInitialized = false;
+    Falcon falcon = null;
+    Dolphin dolphin = null;
+    Hare hare = null;
 
 
     // границы мировой системы координат
@@ -62,26 +64,7 @@ public class GraphicPanel extends JPanel {
     // Определение конструктора элемента
     public GraphicPanel(Data data) {
         this.data = data;
-        Falcon falcon = null;
-        Dolphin dolphin = null;
-        Hare hare = null;
 
-
-        while (!data.isEmptyData()) {
-            Animal animal = data.getNextAnimal();
-            name = animal.nameAnimal;
-            if (name == "Falcon") {
-                falcon = (Falcon) animal;
-            } else if (name == "Hare") {
-                hare = (Hare) animal;
-            }
-            if (falcon != null) {
-                falcons.add(falcon);
-            }
-            if (hare != null) {
-                hares.add(hare);
-            }
-        }
 
         // Добавление обработчика нажатия кнопки мыши
         this.addMouseListener(new MouseAdapter() {
@@ -112,6 +95,31 @@ public class GraphicPanel extends JPanel {
 
             }
         });
+
+        JButton switchButton = new JButton("switch");
+        switchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!data.isEmptyData()) {
+                    Animal animal = data.getNextAnimal();
+                    name = animal.nameAnimal;
+                    System.out.println(name);
+                    if (name == "Falcon") {
+                        falcon = (Falcon) animal;
+                    } else if (name == "Hare") {
+                        hare = (Hare) animal;
+                    }
+                    if (falcon != null) {
+                        falcons.add(falcon);
+                    }
+                    if (hare != null) {
+                        hares.add(hare);
+                    }
+                }
+                repaint();
+            }
+        });
+        this.add(switchButton, BorderLayout.SOUTH); // Размещение кнопки на панели
     }
 
     // переопределение метода прорисовки элемента
@@ -137,6 +145,7 @@ public class GraphicPanel extends JPanel {
             }
         }
     }
+
 
     // установка границ мировой системы координат
     public void setWorldCoords(double xmin, double xmax, double ymin, double ymax) {
