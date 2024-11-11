@@ -49,9 +49,14 @@ public class GraphicPanel extends JPanel {
     // Определение конструктора элемента
     public GraphicPanel(Data data) {
         this.data = data;
+        Falcon falcon = null;
 
         while (!data.isEmptyData()) {
-            Falcon falcon = data.getNextAnimal();
+            Animal animal = data.getNextAnimal();
+            if (animal.nameAnimal == "Falcon") {
+                falcon = (Falcon) animal;
+            }
+
             if (falcon != null) {
                 falcons.add(falcon);
             }
@@ -79,6 +84,8 @@ public class GraphicPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawLine(0, 300, 600, 300);
+        g.drawLine(300, 0, 300, 600);
         for (int i = 0; i < falcons.size(); i++) {
             Falcon falcon = falcons.get(i);
             int subjX = (int) worldXtoScreenX(falcon.getX());
