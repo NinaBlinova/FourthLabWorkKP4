@@ -143,20 +143,19 @@ public class GraphicPanel extends JPanel {
         g.drawLine(0, 310, 600, 310);
         g.drawLine(300, 0, 300, 600);
 
-        if (name == "Falcon") {
-            for (int i = 0; i < falcons.size(); i++) {
-                Falcon falcon = falcons.get(i);
-                int subjX = (int) worldXtoScreenX(falcon.getX());
-                int subjY = (int) worldYtoScreenY(falcon.getY());
-                falcon.drawAt(g, subjX, subjY); // Отрисовка каждого сокола
-            }
-        } else if (name == "Hare") {
-            for (int i = 0; i < hares.size(); i++) {
-                Hare hare = hares.get(i);
-                int subjX = (int) worldXtoScreenX(hare.getX());
-                int subjY = (int) worldYtoScreenY(hare.getY());
-                hare.drawAt(g, subjX, subjY); // Отрисовка каждого зайца
-            }
+        for (int i = 0; i < falcons.size(); i++) {
+            Falcon falcon = falcons.get(i);
+            int subjX = (int) worldXtoScreenX(falcon.getX());
+            int subjY = (int) worldYtoScreenY(falcon.getY());
+            falcon.drawAt(g, subjX, subjY); // Отрисовка каждого сокола
+        }
+
+        // Отрисовка всех зайцев
+        for (int i = 0; i < hares.size(); i++) {
+            Hare hare = hares.get(i);
+            int subjX = (int) worldXtoScreenX(hare.getX());
+            int subjY = (int) worldYtoScreenY(hare.getY());
+            hare.drawAt(g, subjX, subjY); // Отрисовка каждого зайца
         }
     }
 
