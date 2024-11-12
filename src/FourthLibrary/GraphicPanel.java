@@ -12,12 +12,11 @@ public class GraphicPanel extends JPanel {
     private ArrayList<Falcon> falcons = new ArrayList<>();
     private ArrayList<Hare> hares = new ArrayList<>();
     private ArrayList<Dolphin> dolphins = new ArrayList<>();
-    private int currentFalconIndex = 0; // Индекс текущего сокола
-    private int currentHareIndex = 0; // Индекс текущего зайца
+    final int[] currentFalconIndex = {0};
+    final int[] currentHareIndex = {0};
     private int currentDolphinIndex = 0;
     String name;
     private Data data;
-    private boolean falconInitialized = false;
 
 
     // границы мировой системы координат
@@ -32,37 +31,37 @@ public class GraphicPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (name.equals("Falcon")) {
-                if (currentFalconIndex < falcons.size()) {
-                    Falcon currentFalcon = falcons.get(currentFalconIndex);
+                if (currentFalconIndex[0] < falcons.size()) {
+                    Falcon currentFalcon = falcons.get(currentFalconIndex[0]);
                     if (currentFalcon != null) {
                         currentFalcon.move((float) 0.5);
                         repaint();
                         if (currentFalcon.isAtFinalPosition()) {
                             timer.stop();
-                            currentFalconIndex++;
+                            currentFalconIndex[0]++;
+
                         }
                     }
                 }
             } else if (name.equals("Hare")) {
-                if (currentHareIndex < hares.size()) {
-                    Hare currentHare = hares.get(currentHareIndex); // Исправлено на currentHareIndex
+                if (currentHareIndex[0] < hares.size()) {
+                    Hare currentHare = hares.get(currentHareIndex[0]);
                     if (currentHare != null) {
-                        currentHare.move((float) 0.2);
+                        currentHare.move((float) 0.6);
                         repaint();
                         if (currentHare.isAtFinalPosition()) {
                             timer.stop();
-                            currentHareIndex++;
+                            currentHareIndex[0]++;
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if (currentDolphinIndex < dolphins.size()) {
-                    Dolphin currentDolphins = dolphins.get(currentDolphinIndex); // Исправлено на currentHareIndex
-                    if (currentDolphins != null) {
-                        currentDolphins.move((float) 0.2);
+                    Dolphin currentDolphin = dolphins.get(currentDolphinIndex);
+                    if (currentDolphin != null) {
+                        currentDolphin.move((float) 0.03);
                         repaint();
-                        if (currentDolphins.isAtFinalPosition()) {
+                        if (currentDolphin.isAtFinalPosition()) {
                             timer.stop();
                             currentDolphinIndex++;
                         }
@@ -94,8 +93,7 @@ public class GraphicPanel extends JPanel {
                 falcon = (Falcon) animal;
             } else if (animal.nameAnimal == "Hare") {
                 hare = (Hare) animal;
-            }
-            else if (animal.nameAnimal == "Dolphin"){
+            } else if (animal.nameAnimal == "Dolphin") {
                 dolphin = (Dolphin) animal;
             }
             if (falcon != null) {
@@ -113,10 +111,9 @@ public class GraphicPanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-
                 if (name == "Falcon") {
-                    if (currentFalconIndex < falcons.size()) {
-                        Falcon currentFalcon = falcons.get(currentFalconIndex);
+                    if (currentFalconIndex[0] < falcons.size()) {
+                        Falcon currentFalcon = falcons.get(currentFalconIndex[0]);
                         if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
                             double x = screenXtoWorldX(evt.getX());
                             double y = screenYtoWorldY(evt.getY());
@@ -125,20 +122,20 @@ public class GraphicPanel extends JPanel {
                             timer.start(); // Запуск таймера только при клике
                         }
                     }
+
                 } else if (name == "Hare") {
-                    if (currentHareIndex < hares.size()) {
-                        Hare currentHare = hares.get(currentHareIndex);
+                    if (currentHareIndex[0] < hares.size()) {
+                        Hare currentHare = hares.get(currentHareIndex[0]);
                         if (currentHare.startWalk(screenYtoWorldY(evt.getY()))) {
-                            currentHare.setFinalXY();
+                            currentHare.setFinalXY(screenXtoWorldX(evt.getX()), screenYtoWorldY(evt.getY()));
                             timer.start(); // Запуск таймера только при клике
                         }
                     }
-                }
-                else if (name == "Dolphin") {
+                } else if (name == "Dolphin") {
                     if (currentDolphinIndex < dolphins.size()) {
                         Dolphin currentDolphin = dolphins.get(currentDolphinIndex);
                         if (currentDolphin.startSwim()) {
-                            currentDolphin.setFinalXY();
+                            currentDolphin.setFinalXY(screenXtoWorldX(evt.getX()), screenYtoWorldY(evt.getY()));
                             timer.start(); // Запуск таймера только при клике
                         }
                     }
@@ -169,7 +166,7 @@ public class GraphicPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawLine(0, 310, 600, 310);
+        g.drawLine(0, 304, 600, 304);
         g.drawLine(300, 0, 300, 600);
 
         for (int i = 0; i < falcons.size(); i++) {

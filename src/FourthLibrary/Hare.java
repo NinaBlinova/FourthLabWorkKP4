@@ -54,9 +54,9 @@ public class Hare extends WalkingAnimal {
         double tmax = distance / this.speed;
 
         // если движение закончилось
-        if (this.currentX < 0) {
+        if (this.currentY < 0) {
             this.startX = this.finalX;
-            this.startY = this.finalY;
+            this.startY = +this.finalY;
             this.timeValue = 0;
             setJump(false);
             return;
@@ -69,13 +69,13 @@ public class Hare extends WalkingAnimal {
     }
 
     private double calculateY(double x) {
-        return 1 - 4 * (x - 0.5) * (x - 0.5);
+        return 20 - 4 * (x - 0.5) * (x - 0.5);
     }
 
 
-    public void setFinalXY() {
-        this.finalX = 0.5;
-        this.finalY = calculateY(finalX);
+    public void setFinalXY(double x, double y) {
+        this.finalX = x;
+        this.finalY = y;
         this.startX = this.currentX;
         this.startY = this.currentY;
         this.timeValue = 0;

@@ -66,7 +66,7 @@ public class AnimalForm {
     private void createUIComponents() {
         GraphicPanel graphicPanel = new GraphicPanel(data);
         graphicPanel.setPreferredSize(new Dimension(600, 600));
-        graphicPanel.setWorldCoords(-10, 10, -300, 300);
+        graphicPanel.setWorldCoords(-15, 15, -300, 300);
         animalAction.add(graphicPanel, BorderLayout.CENTER);
         animalAction.revalidate();
         animalAction.repaint();

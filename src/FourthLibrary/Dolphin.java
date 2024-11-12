@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Dolphin extends Waterfowl {
     private double speed;
-    private double amplituda;
-    private double depth;
+    private double amplituda = generateRandomAmplitude();
+    private double depth = generateRandomDepth();
 
     // начальные координаты
     private double startX = 0;
@@ -45,6 +45,9 @@ public class Dolphin extends Waterfowl {
         if (this.timeValue >= tmax) {
             this.currentX = this.finalX;
             this.currentY = calculateY(this.finalX); // вычисляем Y для конечной точки
+            if (currentY > 0){
+                currentY = -depth - 25;
+            }
             this.startX = this.finalX;
             this.startY = this.currentY; // обновляем начальные координаты
             this.timeValue = 0;
@@ -55,7 +58,7 @@ public class Dolphin extends Waterfowl {
         // расчет текущих координат по времени
         double progress = this.timeValue / tmax;
         this.currentX = this.startX + progress * (this.finalX - this.startX);
-        this.currentY = calculateY(this.currentX) * amplituda; // вычисляем Y по текущему X
+        this.currentY = calculateY(this.currentX) * (depth + amplituda); // вычисляем Y по текущему X
     }
 
 
@@ -68,12 +71,12 @@ public class Dolphin extends Waterfowl {
     }
 
     private static double generateRandomDepth() {
-        return Math.random() * 20; // Глубина от 0 до 20
+        return Math.random() * 18; // Глубина от 0 до 20
     }
 
-    public void setFinalXY() {
-        this.finalX = depth;
-        this.finalY = calculateY(finalX);
+    public void setFinalXY(double x, double y) {
+        this.finalX = x;
+        this.finalY = y;
         this.startX = this.currentX;
         this.startY = this.currentY;
         this.timeValue = 0;
@@ -91,6 +94,7 @@ public class Dolphin extends Waterfowl {
 
     // прорисовка объекта по указанным координатам x, y
     public void drawAt(Graphics g, int x, int y) {
+        g.setColor(Color.CYAN);
         g.fillOval(x, y, 10, 10);
     }
 
