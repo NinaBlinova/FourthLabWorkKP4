@@ -44,6 +44,16 @@ public class AnimalForm {
             }
         });
 
+        dolphinButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = "Dolphin";
+                double x = Math.random() * 10;
+                double y = Math.random() * 500;
+                addAnimal(name, x, y);
+            }
+        });
+
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,6 +79,10 @@ public class AnimalForm {
         } else if (name == "Hare") {
             Hare newHare = new Hare(name, 0, 0);
             data.addAnimal(newHare);
+        }
+        else{
+            Dolphin newDolphin = new Dolphin(name, 0, 0);
+            data.addAnimal(newDolphin);
         }
     }
 }

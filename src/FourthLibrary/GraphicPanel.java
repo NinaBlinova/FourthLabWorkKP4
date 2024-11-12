@@ -11,12 +11,13 @@ import java.util.ArrayList;
 public class GraphicPanel extends JPanel {
     private ArrayList<Falcon> falcons = new ArrayList<>();
     private ArrayList<Hare> hares = new ArrayList<>();
+    private ArrayList<Dolphin> dolphins = new ArrayList<>();
     private int currentFalconIndex = 0; // Индекс текущего сокола
     private int currentHareIndex = 0; // Индекс текущего зайца
+    private int currentDolphinIndex = 0;
     String name;
     private Data data;
     private boolean falconInitialized = false;
-
 
 
     // границы мировой системы координат
@@ -36,7 +37,6 @@ public class GraphicPanel extends JPanel {
                     if (currentFalcon != null) {
                         currentFalcon.move((float) 0.5);
                         repaint();
-
                         if (currentFalcon.isAtFinalPosition()) {
                             timer.stop();
                             currentFalconIndex++;
@@ -47,11 +47,24 @@ public class GraphicPanel extends JPanel {
                 if (currentHareIndex < hares.size()) {
                     Hare currentHare = hares.get(currentHareIndex); // Исправлено на currentHareIndex
                     if (currentHare != null) {
-                        currentHare.move((float) 0.5);
+                        currentHare.move((float) 0.2);
                         repaint();
                         if (currentHare.isAtFinalPosition()) {
                             timer.stop();
                             currentHareIndex++;
+                        }
+                    }
+                }
+            }
+            else {
+                if (currentDolphinIndex < dolphins.size()) {
+                    Dolphin currentDolphins = dolphins.get(currentDolphinIndex); // Исправлено на currentHareIndex
+                    if (currentDolphins != null) {
+                        currentDolphins.move((float) 0.2);
+                        repaint();
+                        if (currentDolphins.isAtFinalPosition()) {
+                            timer.stop();
+                            currentDolphinIndex++;
                         }
                     }
                 }
@@ -70,6 +83,7 @@ public class GraphicPanel extends JPanel {
         ArrayList<String> type = new ArrayList<>();
         type.add("Falcon");
         type.add("Hare");
+        type.add("Dolphin");
         final int[] currentIndexType = {0};
 
         while (!data.isEmptyData()) {
@@ -81,11 +95,17 @@ public class GraphicPanel extends JPanel {
             } else if (animal.nameAnimal == "Hare") {
                 hare = (Hare) animal;
             }
+            else if (animal.nameAnimal == "Dolphin"){
+                dolphin = (Dolphin) animal;
+            }
             if (falcon != null) {
                 falcons.add(falcon);
             }
             if (hare != null) {
                 hares.add(hare);
+            }
+            if (dolphin != null) {
+                dolphins.add(dolphin);
             }
         }
 
@@ -114,11 +134,19 @@ public class GraphicPanel extends JPanel {
                         }
                     }
                 }
+                else if (name == "Dolphin") {
+                    if (currentDolphinIndex < dolphins.size()) {
+                        Dolphin currentDolphin = dolphins.get(currentDolphinIndex);
+                        if (currentDolphin.startSwim()) {
+                            currentDolphin.setFinalXY();
+                            timer.start(); // Запуск таймера только при клике
+                        }
+                    }
+                }
 
 
             }
         });
-
 
 
         // Добавление кнопки для смены объекта
@@ -126,7 +154,8 @@ public class GraphicPanel extends JPanel {
         switchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!type.isEmpty() && type.size() > currentIndexType[0]) {;
+                if (!type.isEmpty() && type.size() > currentIndexType[0]) {
+                    ;
                     name = type.get(currentIndexType[0]);
                     System.out.println("Current animal: " + name);
                     currentIndexType[0]++;
@@ -157,8 +186,15 @@ public class GraphicPanel extends JPanel {
             int subjY = (int) worldYtoScreenY(hare.getY());
             hare.drawAt(g, subjX, subjY); // Отрисовка каждого зайца
         }
-    }
 
+        // Отрисовка всех дельфинов
+        for (int i = 0; i < dolphins.size(); i++) {
+            Dolphin dolphin = dolphins.get(i);
+            int subjX = (int) worldXtoScreenX(dolphin.getX());
+            int subjY = (int) worldYtoScreenY(dolphin.getY());
+            dolphin.drawAt(g, subjX, subjY); // Отрисовка каждого дельфина
+        }
+    }
 
 
     // установка границ мировой системы координат

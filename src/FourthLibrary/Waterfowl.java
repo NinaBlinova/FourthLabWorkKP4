@@ -14,14 +14,21 @@ public abstract class Waterfowl extends Animal {
         this.isSwimming = false;
     }
 
+
     @Override
     public void move(double yTarget) {
         this.y = yTarget;
     }
 
-    public boolean startSwim(double yMouse){
+    public abstract void move(float time);
+
+    public boolean startSwim() {
         this.isSwimming = true;
         return isSwimming;
+    }
+
+    public void setSwim(boolean f) {
+        isSwimming = f;
     }
 
     public void endSwim() {

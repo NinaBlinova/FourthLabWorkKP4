@@ -23,7 +23,7 @@ public class Hare extends WalkingAnimal {
     Hare(String nameAnimal, double x, double y) {
         super(nameAnimal);
         this.speed = 1 + Math.random() * 8; // Генерация скорости от 1 до 8 м/с
-        this.amplituda = 1 + Math.random() * 3;
+        this.amplituda = 1 + Math.random() * 2;
         this.startX = x; // Начальные координаты по умолчанию
         this.startY = y; // Начальные координаты по умолчанию
         this.finalX = x; // Конечные координаты по умолчанию
@@ -54,7 +54,7 @@ public class Hare extends WalkingAnimal {
         double tmax = distance / this.speed;
 
         // если движение закончилось
-        if (this.currentY < 0) {
+        if (this.currentX < 0) {
             this.startX = this.finalX;
             this.startY = this.finalY;
             this.timeValue = 0;
@@ -65,11 +65,11 @@ public class Hare extends WalkingAnimal {
         // расчет текущих координат по времени
         double progress = this.timeValue / tmax;
         this.currentX = this.startX + progress * (this.finalX - this.startX);
-        this.currentY = calculateY(this.currentX); // вычисляем Y по текущему X
+        this.currentY = calculateY(this.currentX) * amplituda; // вычисляем Y по текущему X
     }
 
     private double calculateY(double x) {
-        return amplituda - 4 * (x - 0.5) * (x - 0.5);
+        return 1 - 4 * (x - 0.5) * (x - 0.5);
     }
 
 
