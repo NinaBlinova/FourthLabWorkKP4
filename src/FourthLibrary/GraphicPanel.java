@@ -114,7 +114,7 @@ public class GraphicPanel extends JPanel {
                 if (name == "Falcon") {
                     if (currentFalconIndex[0] < falcons.size()) {
                         Falcon currentFalcon = falcons.get(currentFalconIndex[0]);
-                        if (currentFalcon.startFly(screenYtoWorldY(evt.getY()))) {
+                        if (currentFalcon.isMoving(screenYtoWorldY(evt.getY()))) {
                             double x = screenXtoWorldX(evt.getX());
                             double y = screenYtoWorldY(evt.getY());
                             // установка координат конечной точки движения объекта
@@ -126,7 +126,7 @@ public class GraphicPanel extends JPanel {
                 } else if (name == "Hare") {
                     if (currentHareIndex[0] < hares.size()) {
                         Hare currentHare = hares.get(currentHareIndex[0]);
-                        if (currentHare.startWalk(screenYtoWorldY(evt.getY()))) {
+                        if (currentHare.isMoving(screenYtoWorldY(evt.getY()))) {
                             currentHare.setFinalXY(screenXtoWorldX(evt.getX()), screenYtoWorldY(evt.getY()));
                             timer.start(); // Запуск таймера только при клике
                         }
@@ -134,7 +134,7 @@ public class GraphicPanel extends JPanel {
                 } else if (name == "Dolphin") {
                     if (currentDolphinIndex < dolphins.size()) {
                         Dolphin currentDolphin = dolphins.get(currentDolphinIndex);
-                        if (currentDolphin.startSwim()) {
+                        if (currentDolphin.isMoving(screenXtoWorldX(evt.getX()))) {
                             currentDolphin.setFinalXY(screenXtoWorldX(evt.getX()), screenYtoWorldY(evt.getY()));
                             timer.start(); // Запуск таймера только при клике
                         }

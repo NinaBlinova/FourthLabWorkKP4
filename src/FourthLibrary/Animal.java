@@ -12,17 +12,12 @@ public abstract class Animal {
     }
 
     // Абстрактный метод для передвижения
-    public abstract void move(double yTarget);
+    public abstract void move(float time);
 
-    // Метод для проверки, находится ли животное в движении
-    public abstract boolean isMoving();
-
-    // Метод для получения названия животного
-    public String getName() {
-        return nameAnimal;
-    }
 
     public double getY() {
         return y;
     }
+
+    public abstract boolean isMoving(double yMouse);
 }

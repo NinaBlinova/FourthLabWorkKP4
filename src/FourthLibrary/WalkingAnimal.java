@@ -12,34 +12,16 @@ public abstract class WalkingAnimal extends Animal {
         this.isJumping = false;
     }
 
-    @Override
-    public void move(double yTarget) {
-        this.y = yTarget;
-    }
-
-    public boolean startWalk(double yMouse) {
+    public boolean isMoving(double yMouse) {
         if (yMouse >= 0) {
             isJumping = true;
         }
         return isJumping;
     }
 
-    public void endWalk() {
-        if (isJumping) {
-            this.y = 0;
-            isJumping = false;
-        }
-    }
 
     public void setJump(boolean f){
         isJumping = f;
     }
 
-
-    @Override
-    public boolean isMoving() {
-        return isJumping;
-    }
-
-    public abstract void move(float time);
 }

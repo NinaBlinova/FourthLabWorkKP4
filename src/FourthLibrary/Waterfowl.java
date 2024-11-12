@@ -14,15 +14,8 @@ public abstract class Waterfowl extends Animal {
         this.isSwimming = false;
     }
 
-
     @Override
-    public void move(double yTarget) {
-        this.y = yTarget;
-    }
-
-    public abstract void move(float time);
-
-    public boolean startSwim() {
+    public boolean isMoving(double x){
         this.isSwimming = true;
         return isSwimming;
     }
@@ -31,15 +24,6 @@ public abstract class Waterfowl extends Animal {
         isSwimming = f;
     }
 
-    public void endSwim() {
-        if (isSwimming) {
-            this.y = -depth; // Останавливаемся на глубине
-            isSwimming = false;
-        }
-    }
 
-    @Override
-    public boolean isMoving() {
-        return isSwimming;
-    }
+
 }

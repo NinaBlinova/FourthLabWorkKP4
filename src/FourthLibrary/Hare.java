@@ -56,7 +56,10 @@ public class Hare extends WalkingAnimal {
         // если движение закончилось
         if (this.currentY < 0) {
             this.startX = this.finalX;
-            this.startY = +this.finalY;
+            this.startY = this.finalY;
+            if (finalY < 0){
+                finalY = 0;
+            }
             this.timeValue = 0;
             setJump(false);
             return;

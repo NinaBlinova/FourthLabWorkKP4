@@ -8,14 +8,6 @@ public abstract class FlyingAnimals extends Animal {
         this.isFlying = false;
     }
 
-    @Override
-    public void move(double yTarget) {
-        if (yTarget < 0) {
-            this.y = 1;
-        }
-        this.y = yTarget;
-    }
-
     public boolean getFly() {
         return isFlying;
     }
@@ -24,7 +16,8 @@ public abstract class FlyingAnimals extends Animal {
         isFlying = f;
     }
 
-    public boolean startFly(double yMouse) {
+    @Override
+    public boolean isMoving(double yMouse) {
         if (yMouse > 0) {
             this.isFlying = true;
         } else {
@@ -33,11 +26,4 @@ public abstract class FlyingAnimals extends Animal {
         return isFlying;
     }
 
-    @Override
-    public boolean isMoving() {
-        return isFlying;
-    }
-
-    // осуществление движения (по линейной траектории)
-    public abstract void move(float time);
 }
