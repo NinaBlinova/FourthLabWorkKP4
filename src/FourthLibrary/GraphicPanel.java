@@ -16,9 +16,7 @@ public class GraphicPanel extends JPanel {
     String name;
     private Data data;
     private boolean falconInitialized = false;
-    Falcon falcon = null;
-    Dolphin dolphin = null;
-    Hare hare = null;
+
 
 
     // границы мировой системы координат
@@ -65,14 +63,22 @@ public class GraphicPanel extends JPanel {
     // Определение конструктора элемента
     public GraphicPanel(Data data) {
         this.data = data;
+        Falcon falcon = null;
+        Dolphin dolphin = null;
+        Hare hare = null;
 
-        if (!data.isEmptyData()) {
+        ArrayList<String> type = new ArrayList<>();
+        type.add("Falcon");
+        type.add("Hare");
+        final int[] currentIndexType = {0};
+
+        while (!data.isEmptyData()) {
             Animal animal = data.getNextAnimal();
-            name = animal.nameAnimal;
-            System.out.println(name);
-            if (name == "Falcon") {
+            //name = animal.nameAnimal;
+            //System.out.println(name);
+            if (animal.nameAnimal == "Falcon") {
                 falcon = (Falcon) animal;
-            } else if (name == "Hare") {
+            } else if (animal.nameAnimal == "Hare") {
                 hare = (Hare) animal;
             }
             if (falcon != null) {
@@ -112,6 +118,22 @@ public class GraphicPanel extends JPanel {
 
             }
         });
+
+
+
+        // Добавление кнопки для смены объекта
+        JButton switchButton = new JButton("Switch to Next Animal");
+        switchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!type.isEmpty() && type.size() > currentIndexType[0]) {;
+                    name = type.get(currentIndexType[0]);
+                    System.out.println("Current animal: " + name);
+                    currentIndexType[0]++;
+                }
+            }
+        });
+        this.add(switchButton, BorderLayout.SOUTH); // Размещение кнопки на панели
     }
 
     // переопределение метода прорисовки элемента
