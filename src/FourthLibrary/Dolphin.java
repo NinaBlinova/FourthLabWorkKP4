@@ -25,7 +25,7 @@ public class Dolphin extends Waterfowl {
         this.startX = x; // Начальные координаты по умолчанию
         this.startY = y; // Начальные координаты по умолчанию
         this.finalX = x; // Конечные координаты по умолчанию
-        this.finalY = y; // Конечные координаты по умолчанию
+        this.finalY = -y; // Конечные координаты по умолчанию
         this.currentX = x; // Установка текущих координат на начальные
         this.currentY = y; // Инвертируем Y для мировой системы координат
     }
@@ -44,10 +44,7 @@ public class Dolphin extends Waterfowl {
 
         if (this.timeValue >= tmax) {
             this.currentX = this.finalX;
-            this.currentY = calculateY(this.finalX); // вычисляем Y для конечной точки
-            if (currentY >= 0) {
-                currentY = -depth;
-            }
+            this.currentY = -depth; // вычисляем Y для конечной точки
             this.startX = this.finalX;
             this.startY = this.currentY; // обновляем начальные координаты
             this.timeValue = 0;
@@ -58,7 +55,7 @@ public class Dolphin extends Waterfowl {
         // расчет текущих координат по времени
         double progress = this.timeValue / tmax;
         this.currentX = this.startX + progress * (this.finalX - this.startX);
-        this.currentY = calculateY(this.currentX) * (depth + amplituda); // вычисляем Y по текущему X
+        this.currentY = -calculateY(this.currentX) * (depth + amplituda); // вычисляем Y по текущему X
     }
 
     private double calculateY(double x) {
