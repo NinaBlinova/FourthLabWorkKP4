@@ -54,7 +54,7 @@ public class Hare extends WalkingAnimal {
         double tmax = distance / this.speed;
 
         // если движение закончилось
-        if (this.timeValue >= tmax) {
+        if (this.timeValue >= tmax || this.currentY < 0) {
             this.currentX = this.finalX;
             this.currentY = 0; // вычисляем Y для конечной точки
             this.startX = this.finalX;
