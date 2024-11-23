@@ -54,11 +54,11 @@ public class Hare extends WalkingAnimal {
         double tmax = distance / this.speed;
 
         // если движение закончилось
-        if (this.timeValue >= tmax || this.currentY < 0) {
+        if (this.currentY < 0) {
             this.currentX = this.finalX;
             this.currentY = 0; // вычисляем Y для конечной точки
             this.startX = this.finalX;
-            this.startY = this.currentY; // обновляем начальные координаты
+            this.startY = 0; // обновляем начальные координаты
             this.timeValue = 0;
             setJump(false);
             return;
@@ -67,7 +67,7 @@ public class Hare extends WalkingAnimal {
         // расчет текущих координат по времени
         double progress = this.timeValue / tmax;
         this.currentX = this.startX + progress * (this.finalX - this.startX);
-        this.currentY = calculateY(this.currentX) * amplituda; // вычисляем Y по текущему X
+        this.currentY = Math.max(0, calculateY(this.currentX) * amplituda);
     }
 
     private double calculateY(double x) {
@@ -106,6 +106,6 @@ public class Hare extends WalkingAnimal {
 
     public boolean isAtFinalPosition() {
         // Проверяем, близки ли текущие координаты к конечным
-        return currentY < 0;
+        return currentY == 0;
     }
 }

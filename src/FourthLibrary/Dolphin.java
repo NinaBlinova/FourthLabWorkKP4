@@ -44,7 +44,7 @@ public class Dolphin extends Waterfowl {
 
         if (this.timeValue >= tmax) {
             this.currentX = this.finalX;
-            this.currentY = -depth; // вычисляем Y для конечной точки
+            this.currentY = -depth * 5; // вычисляем Y для конечной точки
             this.startX = this.finalX;
             this.startY = this.currentY; // обновляем начальные координаты
             this.timeValue = 0;
@@ -55,7 +55,7 @@ public class Dolphin extends Waterfowl {
         // расчет текущих координат по времени
         double progress = this.timeValue / tmax;
         this.currentX = this.startX + progress * (this.finalX - this.startX);
-        this.currentY = -calculateY(this.currentX) * (depth + amplituda); // вычисляем Y по текущему X
+        this.currentY = -calculateY(this.currentX) * (depth + amplituda) * 5; // вычисляем Y по текущему X
     }
 
     private double calculateY(double x) {
